@@ -65,6 +65,34 @@ cкачан и установлен на виртуальную машину git
 > git commit -m "исправила теги в yml"
 > git push origin develop
 
-Задача в CI/CD gitlab
+задача в CI/CD gitlab
 ![alt text](image-11.png)
 ![alt text](image-12.png)
+
+Артефакты после выполнения задачи
+![alt text](image-13.png)
+
+# Part 3. Тест кодстайла
+
+устанавливаем пакет clang-format на машину с ранером
+
+> sudo apt install clang-format
+
+проверка установлен ли clang-format
+
+> clang-format --version
+
+добавляем дополнительное этап (style) пайплайна
+
+![alt text](image-14.png)
+
+пуш проекта в gitlab
+> git add ../.gitlab-ci.yml
+> git commit -m "part 3, обновленный yml"
+> git push origin develop
+
+задача в CI/CD gitlab
+![alt text](image-15.png)
+
+выполненный этап style
+![alt text](image-16.png)
