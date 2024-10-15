@@ -96,3 +96,51 @@ cкачан и установлен на виртуальную машину git
 
 выполненный этап style
 ![alt text](image-16.png)
+
+# Part 4. Интеграционные тесты
+
+устанавливаем пакет valgrind на машину с ранером
+
+> sudo apt-get install valgrind
+
+проверка установлен ли valgrind
+
+> valgrind --version
+
+Исправим тестовый файл
+![alt text](image-6.png)
+
+добавляем дополнительное этап (tests) пайплайна
+![alt text](image-17.png)
+
+задача в CI/CD gitlab
+![alt text](image-19.png)
+
+выполненный этап tests
+![alt text](image-18.png)
+
+чуть изменяем тест для fail
+![alt text](image-20.png)
+
+теперь fail вызывает код ошибки
+![alt text](image-21.png)
+
+![alt text](image-22.png)
+
+<details>
+    <summary>Другой вариант решения через log file</summary>
+    script:
+    - cd src/cat
+    - make test | tee test_output.log  # Запускаем тесты и сохраняем вывод в лог
+    - make test
+    - cd ../grep
+    - make test | tee -a test_output.log  # Добавляем вывод тестов в тот же лог
+    - |
+      if grep -q "FAIL: 0" test_output.log; then
+        echo "All tests passed."
+      else
+        echo "Tests failed!"
+        exit 1
+      fi
+    - make test
+</details>
