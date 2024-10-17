@@ -82,7 +82,7 @@ cкачан и установлен на виртуальную машину git
 
 > clang-format --version
 
-добавляем дополнительное этап (style) пайплайна
+добавляем дополнительный этап (style) пайплайна
 
 ![alt text](image-14.png)
 
@@ -107,22 +107,28 @@ cкачан и установлен на виртуальную машину git
 
 > valgrind --version
 
-Исправим тестовый файл
+Исправлен тестовый файл, добавлен выход с ошибкой при наличие fail
+
 ![alt text](image-6.png)
 
-добавляем дополнительное этап (tests) пайплайна
+добавляем дополнительный этап (tests) пайплайна
+
 ![alt text](image-17.png)
 
 задача в CI/CD gitlab
+
 ![alt text](image-19.png)
 
 выполненный этап tests
+
 ![alt text](image-18.png)
 
 чуть изменяем тест для fail
+
 ![alt text](image-20.png)
 
 теперь fail вызывает код ошибки
+
 ![alt text](image-21.png)
 
 ![alt text](image-22.png)
@@ -144,3 +150,45 @@ cкачан и установлен на виртуальную машину git
       fi
     - make test
 </details>
+
+# Part 5. Этап деплоя
+
+создаем вторую машину cicd2
+
+меняем сеть на сетевой мост
+![alt text](image-30.png)
+
+меняем пользователя на gitlab-runner
+> sudo su gitlab-runner
+
+![alt text](image-29.png)
+
+генерируем ssh ключ
+> ssh-keygen -t rsa -b 4096 -C "gitlab-runner@cicd-system"
+
+![alt text](image-31.png)
+
+копируем ssh на машину 2
+> ssh-copy-id br2@192.168.1.24
+
+![alt text](image-32.png)
+
+добавляем дополнительный этап (deploy_job) пайплайна
+
+![alt text](image-25.png)
+
+script_deploy.sh
+
+![alt text](image-26.png)
+
+делаем владельцем /usr/local/bin br2 на 2 машине 
+> sudo chown -R root /usr/local/bin
+
+выполненный этап deploy_job
+
+![alt text](image-28.png)
+![alt text](image-24.png)
+
+проверяем файлы на машине 2 
+
+![alt text](image-27.png)
